@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeVer 1.4: The Official Standard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is an interactive marketing and documentation page for the LifeVer standard. Rationale: Narrative flow builds from 'Why' to 'How' to 'Result'. Key interaction is the 'Live Demo' which uses Chart.js and JS filtering to demonstrate the power of structured metadata in a personal journal. -->
+    <!-- Visualization & Content Choices: Versioning Scheme -> Interactive popovers (HTML/CSS) for clarity. Example Changelog -> Chart.js Bar Chart (Canvas) + JS Filtering for engagement. NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #38332E;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .active-filter {
+            background-color: #D4A373 !important;
+            color: #FEFAE0 !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+        .filter-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .entry-card {
+            transition: all 0.3s ease-in-out;
+            border-left-width: 4px;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="w-full">
+        <!-- Header/Nav -->
+        <nav class="bg-white border-b border-[#E9E4D9] sticky top-0 z-50">
+            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="font-bold text-xl tracking-tight">LifeVer <span class="text-[#D4A373]">1.4</span></span>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <a href="#live-demo" class="hidden md:block text-sm font-semibold hover:text-[#D4A373]">Live Demo</a>
+                    <a href="https://github.com/LifeVer-Standard/lifever" target="_blank" class="bg-[#38332E] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-black transition-colors flex items-center">
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="text-center py-20 md:py-32 bg-[#FEFAE0]">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl md:text-6xl font-bold text-[#38332E] tracking-tight">The Life Changelog Standard</h1>
+                <p class="mt-4 text-lg md:text-2xl text-[#6F6A63] max-w-3xl mx-auto">Version your growth. Track your accomplishments as "changes" and build a meaningful personal history.</p>
+                <div class="mt-8 flex justify-center space-x-4">
+                    <a href="#live-demo" class="bg-[#D4A373] text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-[#C59461] transition-colors">Interactive Demo</a>
+                    <a href="https://github.com/LifeVer-Standard/lifever" target="_blank" class="bg-white border-2 border-[#D4A373] text-[#D4A373] font-bold py-3 px-8 rounded-lg hover:bg-[#FEFAE0] transition-colors">Official Repo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why LifeVer? Section -->
+        <section class="py-16 md:py-24">
+            <div class="container mx-auto px-6 max-w-4xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Why LifeVer?</h2>
+                <p class="mt-6 text-lg text-[#6F6A63]">LifeVer is an open-source standard hosted by the <strong>LifeVer Standard</strong> organization. It provides the metadata structure necessary to turn a messy diary into a powerful analytical tool for reflection and trajectory planning.</p>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="py-16 md:py-24 bg-[#FEFAE0]">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center tracking-tight">Semantic Versioning for Life</h2>
+                <div class="mt-12 grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-semibold mb-4">1. The Version Number</h3>
+                        <p class="text-[#6F6A63] mb-6">Every release is defined by an <strong>EPOCH.MILESTONE.STEP</strong> hierarchy.</p>
+                        <div id="version-explainer" class="text-3xl font-bold p-6 bg-white rounded-xl shadow-md cursor-default flex justify-center items-center space-x-2">
+                            <span class="version-part p-2 rounded-lg" data-def="<strong>EPOCH:</strong> A fundamental era change (e.g., career shift, marriage, child).">EPOCH</span>
+                            <span>.</span>
+                            <span class="version-part p-2 rounded-lg" data-def="<strong>MILESTONE:</strong> Achievement of a major goal or project completion.">MILESTONE</span>
+                            <span>.</span>
+                            <span class="version-part p-2 rounded-lg" data-def="<strong>STEP:</strong> Incremental daily or weekly progress.">STEP</span>
+                        </div>
+                        <div id="version-definition" class="mt-4 p-4 bg-[#E9E4D9] rounded-lg text-[#38332E] min-h-[120px] flex items-center justify-center text-center">
+                            <p>Hover over a part to explore the logic.</p>
+                        </div>
+                    </div>
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-semibold mb-4">2. The Workflow</h3>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-white rounded-xl shadow-md flex items-center">
+                                <span class="text-2xl font-bold text-white bg-[#D4A373] w-10 h-10 flex items-center justify-center rounded-full mr-4">1</span>
+                                <div><h4 class="font-semibold">Capture</h4><p class="text-sm text-[#6F6A63]">Log accomplishments to `[Unreleased]`.</p></div>
+                            </div>
+                            <div class="p-4 bg-white rounded-xl shadow-md flex items-center">
+                                <span class="text-2xl font-bold text-white bg-[#D4A373] w-10 h-10 flex items-center justify-center rounded-full mr-4">2</span>
+                                <div><h4 class="font-semibold">Review</h4><p class="text-sm text-[#6F6A63]">Conduct a weekly review ceremony.</p></div>
+                            </div>
+                             <div class="p-4 bg-white rounded-xl shadow-md flex items-center">
+                                <span class="text-2xl font-bold text-white bg-[#D4A373] w-10 h-10 flex items-center justify-center rounded-full mr-4">3</span>
+                                <div><h4 class="font-semibold">Release</h4><p class="text-sm text-[#6F6A63]">Commit changes to a new version.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Building Blocks Section -->
+        <section class="py-16 md:py-24">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center tracking-tight">Standard Taxonomy</h2>
+                <div class="mt-12 grid md:grid-cols-2 gap-12">
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-semibold mb-4 text-center">5 Official Types</h3>
+                        <div id="change-types-container" class="space-y-3"></div>
+                    </div>
+                    <div class="fade-in">
+                        <h3 class="text-2xl font-semibold mb-4 text-center">Core Scopes</h3>
+                         <div id="scopes-container" class="flex flex-wrap justify-center gap-3"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Demo Section -->
+        <section id="live-demo" class="py-16 md:py-24 bg-[#FEFAE0]">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-center tracking-tight">Interactive Exploration</h2>
+                <p class="text-center mt-4 text-lg text-[#6F6A63]">Filter the official example changelog to see LifeVer's analytical power.</p>
+                
+                <div class="mt-12">
+                    <div id="scope-filters" class="flex flex-wrap justify-center gap-2 mb-4"></div>
+                    <div id="type-filters" class="flex flex-wrap justify-center gap-2 mb-12"></div>
+                </div>
+
+                <div class="grid lg:grid-cols-5 gap-8">
+                    <div class="lg:col-span-3">
+                        <div id="changelog-entries" class="space-y-4"></div>
+                        <p id="no-results" class="hidden text-center p-8 bg-white rounded-xl shadow-md">No entries found for this filter.</p>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <div class="chart-container bg-white p-4 rounded-xl shadow-md">
+                            <canvas id="typeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-[#38332E] text-white py-16">
+            <div class="container mx-auto px-6 text-center">
+                <p class="font-bold text-2xl">Own Your Trajectory.</p>
+                <div class="mt-8 flex justify-center space-x-4">
+                    <a href="https://github.com/LifeVer-Standard/lifever" target="_blank" class="bg-[#D4A373] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#C59461]">Contribute on GitHub</a>
+                </div>
+                
+                <hr class="my-10 border-[#4A453F]">
+                
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-2xl font-bold border-2 border-white px-2 rounded">CC</span>
+                        <span class="text-2xl font-bold border-2 border-white px-2 rounded">BY</span>
+                    </div>
+                    <p class="text-sm text-[#A8A299] max-w-xl">
+                        Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" class="text-[#D4A373] hover:underline" target="_blank">CC BY 4.0</a>. 
+                        Official specification by the <strong>LifeVer Standard</strong> organization.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const changeTypes = [
+                { name: 'Added', color: '#6A994E', description: 'New habits, skills, or items.' },
+                { name: 'Improved', color: '#3A86FF', description: 'Agency-driven enhancements.' },
+                { name: 'Changed', color: '#FFBE0B', description: 'Factual or external shifts.' },
+                { name: 'Fixed', color: '#FB5607', description: 'Solving problems or friction.' },
+                { name: 'Removed', color: '#FF006E', description: 'Intentional de-cluttering.' }
+            ];
+
+            const coreScopes = ['Work', 'Family', 'Personal', 'Health', 'Home', 'Spiritual', 'Financial'];
+
+            const changelogData = [
+                { version: '42.1.4', date: '2025-06-13', type: 'Added', scope: 'Personal', description: 'Finished reading "Dune" by Frank Herbert.' },
+                { version: '42.1.4', date: '2025-06-13', type: 'Added', scope: 'Home', description: 'Installed new smart thermostat.' },
+                { version: '42.1.4', date: '2025-06-13', type: 'Fixed', scope: 'Work', description: 'Resolved the recurring sync issue in the reporting module.' },
+                { version: '42.1.4', date: '2025-06-13', type: 'Improved', scope: 'Family', description: 'Taught my daughter five-paragraph essay structure.' },
+                { version: '42.1.3', date: '2025-06-06', type: 'Improved', scope: 'Health', description: 'Held a plank for 2 minutes, new PR.'},
+                { version: '42.1.3', date: '2025-06-06', type: 'Fixed', scope: 'Home', description: 'Organized cable management behind TV.'},
+                { version: '42.1.2', date: '2025-05-30', type: 'Added', scope: 'Financial', description: 'Set up recurring donation to local food bank.'},
+                { version: '42.1.2', date: '2025-05-30', type: 'Changed', scope: 'Work', description: 'Project "Phoenix" officially greenlit.'},
+                { version: '42.1.1', date: '2025-05-23', type: 'Removed', scope: 'Personal', description: 'Unsubscribed from 5 marketing email lists.'},
+                { version: '42.1.1', date: '2025-05-23', type: 'Improved', scope: 'Spiritual', description: 'Morning meditation streak: 7 days.'},
+            ];
+
+            let activeScopeFilter = 'All';
+            let activeTypeFilter = 'All';
+
+            const typeColorMap = changeTypes.reduce((acc, t) => { acc[t.name] = t.color; return acc; }, {});
+
+            // Interaction: Version Header
+            const versionParts = document.querySelectorAll('.version-part');
+            const versionDefinition = document.getElementById('version-definition');
+            versionParts.forEach(part => {
+                part.addEventListener('mouseenter', () => {
+                    part.style.backgroundColor = '#D4A373';
+                    part.style.color = '#FEFAE0';
+                    versionDefinition.innerHTML = `<p>${part.dataset.def}</p>`;
+                });
+                part.addEventListener('mouseleave', () => {
+                    part.style.backgroundColor = 'transparent';
+                    part.style.color = 'inherit';
+                    versionDefinition.innerHTML = `<p>Hover over a part to explore the logic.</p>`;
+                });
+            });
+
+            // UI Init
+            const changeTypesContainer = document.getElementById('change-types-container');
+            changeTypes.forEach(t => {
+                const div = document.createElement('div');
+                div.className = 'p-3 bg-white rounded-lg shadow-sm border-l-4';
+                div.style.borderColor = t.color;
+                div.innerHTML = `<h4 class="font-bold text-sm" style="color:${t.color}">${t.name}</h4><p class="text-xs text-[#6F6A63]">${t.description}</p>`;
+                changeTypesContainer.appendChild(div);
+            });
+
+            const scopesContainer = document.getElementById('scopes-container');
+            coreScopes.forEach(s => {
+                const span = document.createElement('span');
+                span.className = 'px-3 py-1 bg-white text-xs font-bold rounded-full shadow-sm';
+                span.textContent = s;
+                scopesContainer.appendChild(span);
+            });
+
+            // Chart Init
+            const ctx = document.getElementById('typeChart').getContext('2d');
+            const typeChart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels: [], datasets: [{ data: [], backgroundColor: [], borderWidth: 0 }] },
+                options: {
+                    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } }
+                }
+            });
+
+            const scopeFiltersContainer = document.getElementById('scope-filters');
+            const typeFiltersContainer = document.getElementById('type-filters');
+
+            function createFilterBtn(text, group, container) {
+                const b = document.createElement('button');
+                b.textContent = text;
+                b.className = 'filter-btn px-3 py-1 bg-white text-xs font-bold rounded-full shadow-sm border border-[#E9E4D9]';
+                if (text === 'All') b.classList.add('active-filter');
+                b.onclick = () => {
+                    if (group === 'scope') activeScopeFilter = text; else activeTypeFilter = text;
+                    render();
+                };
+                container.appendChild(b);
+            }
+
+            function render() {
+                document.querySelectorAll('#scope-filters button').forEach(b => b.classList.toggle('active-filter', b.textContent === activeScopeFilter));
+                document.querySelectorAll('#type-filters button').forEach(b => b.classList.toggle('active-filter', b.textContent === activeTypeFilter));
+                
+                const filtered = changelogData.filter(e => (activeScopeFilter === 'All' || e.scope === activeScopeFilter) && (activeTypeFilter === 'All' || e.type === activeTypeFilter));
+                
+                const entriesContainer = document.getElementById('changelog-entries');
+                entriesContainer.innerHTML = '';
+                if (filtered.length === 0) document.getElementById('no-results').classList.remove('hidden');
+                else {
+                    document.getElementById('no-results').classList.add('hidden');
+                    let lastV = null;
+                    filtered.forEach(e => {
+                        if (e.version !== lastV) {
+                            lastV = e.version;
+                            const h = document.createElement('h5');
+                            h.className = 'text-xs font-black uppercase text-gray-400 mt-4';
+                            h.textContent = `${e.version} — ${e.date}`;
+                            entriesContainer.appendChild(h);
+                        }
+                        const card = document.createElement('div');
+                        card.className = 'entry-card p-3 bg-white rounded shadow-sm border-l-4 fade-in flex justify-between items-center';
+                        card.style.borderColor = typeColorMap[e.type];
+                        card.innerHTML = `<span class="text-sm font-medium"><strong>[${e.scope}]:</strong> ${e.description}</span><span class="text-[10px] uppercase font-black px-1.5 py-0.5 rounded text-white" style="background:${typeColorMap[e.type]}">${e.type}</span>`;
+                        entriesContainer.appendChild(card);
+                    });
+                }
+
+                const counts = changeTypes.map(t => filtered.filter(e => e.type === t.name).length);
+                typeChart.data.labels = changeTypes.map(t => t.name);
+                typeChart.data.datasets[0].data = counts;
+                typeChart.data.datasets[0].backgroundColor = changeTypes.map(t => t.color);
+                typeChart.update();
+            }
+
+            createFilterBtn('All', 'scope', scopeFiltersContainer);
+            coreScopes.forEach(s => createFilterBtn(s, 'scope', scopeFiltersContainer));
+            createFilterBtn('All', 'type', typeFiltersContainer);
+            changeTypes.forEach(t => createFilterBtn(t.name, 'type', typeFiltersContainer));
+            render();
+        });
+    </script>
+</body>
+</html>
