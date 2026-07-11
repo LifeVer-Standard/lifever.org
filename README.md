@@ -14,6 +14,8 @@ The standard itself — `SPEC.md`, versioned independently of this site — live
 
 Open `index.html` directly, or serve the directory with any static file server. There's no build step.
 
+**When `LifeVer-Standard/LifeVer` cuts a new release**, update the version badge in `index.html`: the nav badge (`LifeVer <span>...</span>`) and the `<title>` tag both hardcode the current spec version and don't update automatically.
+
 ## Deployment
 
 Deployed to Cloudflare via `wrangler.jsonc`.
