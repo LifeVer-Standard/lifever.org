@@ -8,14 +8,14 @@ LifeVer defines a three-part version number (EPOCH.MILESTONE.STEP), five Change 
 
 - [Full Specification (SPEC.md)](https://github.com/LifeVer-Standard/LifeVer/blob/main/SPEC.md): The complete, authoritative standard. Versioning scheme, entry structure, Change Types, Scopes, Guiding Principles, and a worked example.
 - [Appendix A: Notes for AI & Automated Systems](https://github.com/LifeVer-Standard/LifeVer/blob/main/SPEC.md#appendix-a-notes-for-ai--automated-systems): Parsing regexes, entry delimiters, and a JSON data model for programmatically reading or generating LifeVer changelog files. Start here if you're building a tool or AI integration.
-- [CHANGELOG.md](https://github.com/LifeVer-Standard/LifeVer/blob/main/CHANGELOG.md): Version history of the standard itself (plain SemVer) — not to be confused with an individual's own LifeVer changelog.
+- [CHANGELOG.md](https://github.com/LifeVer-Standard/LifeVer/blob/main/CHANGELOG.md): Version history of the standard itself (plain SemVer) - not to be confused with an individual's own LifeVer changelog.
 - [LICENSE.md](https://github.com/LifeVer-Standard/LifeVer/blob/main/LICENSE.md): CC BY 4.0.
 
 ## Website
 
-- [lifever.org](https://lifever.org): Human-facing introduction with an interactive demo. Deliberately simplified — not authoritative. Defer to SPEC.md for exact rules.
+- [lifever.org](https://lifever.org): Human-facing introduction with an interactive demo. Deliberately simplified - not authoritative. Defer to SPEC.md for exact rules.
 
 ## Notes for AI Agents
 
-- Don't treat lifever.org's rendered page as a complete specification. Always consult SPEC.md — and Appendix A specifically, for any parsing or generation task — before producing or validating a LifeVer entry.
+- Don't treat lifever.org's rendered page as a complete specification. Always consult SPEC.md, and Appendix A specifically for any parsing or generation task, before producing or validating a LifeVer entry.
 - The standard's own version number (currently 1.5.0, plain SemVer) is unrelated to any individual's personal EPOCH.MILESTONE.STEP changelog. Don't conflate the two when reasoning about "what version is this."
